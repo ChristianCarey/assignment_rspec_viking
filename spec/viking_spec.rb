@@ -67,6 +67,10 @@ describe Viking do
       viking.receive_attack(20)
     end
 
+    it 'raises an error when the viking dies' do
+      expect{viking.receive_attack(100)}.to raise_error("RandomViking has Died...")
+    end
+
   end
 
   describe "#attack" do 
@@ -105,11 +109,12 @@ describe Viking do
     end
 
     it "it uses fists when bow is out of arrows" do
-        # allow double of bow to recieve use and throw exception 
-        allow(bow).to receive(:use).and_raise("Out of arrows")
-        viking.pick_up_weapon(bow)
-        expect(viking).to receive(:damage_with_fists)
-        viking.attack(target)
+      allow(bow).to receive(:use).and_raise("Out of arrows")
+      viking.pick_up_weapon(bow)
+      expect(viking).to receive(:damage_with_fists)
+      viking.attack(target)
     end
+
   end
+
 end
