@@ -1,7 +1,7 @@
 describe Viking do 
 
   let(:viking){ Viking.new }
-  let(:bow){ double("Bow", is_a?: true ) }
+  let(:bow){ double("Bow", is_a?: true, use: 2 ) }
   before do 
     allow(viking).to receive(:puts)
   end
@@ -71,11 +71,40 @@ describe Viking do
   describe "#attack" do 
 
     let(:target){ double("Target", name: "Target", receive_attack: nil )}
-    
+
+    before do
+      allow_any_instance_of(Fists).to receive(:use).and_return(1)
+    end
+
     it "should attack its target" do 
-      allow(viking).to receive(:puts)
-      expect(target).to receive(:receive_attack).with(2.5)
+      expect(target).to receive(:receive_attack).with(viking.strength)
       viking.attack(target)
     end
+
+    it "damages with fists if the viking has no weapon" do
+      expect(viking).to receive(:damage_with_fists)
+      viking.attack(target) 
+    end
+
+    it "multiplies strength by fist's multiplier when attacking" do
+      expect(viking).to receive(:damage_with_fists).and_return(viking.strength)
+      viking.attack(target)
+    end
+
+    it "damages with weapons if the viking has a weapon" do
+      viking.pick_up_weapon(bow)
+      expect(viking).to receive(:damage_with_weapon)
+      viking.attack(target)
+    end
+
+    it "multiplies strength by the weapon's multiplier" do
+      viking.pick_up_weapon(bow)
+      expect(viking).to receive(:damage_with_weapon).and_return(viking.strength * bow.use)
+      viking.attack(target)
+    end
+
+    it "it uses when bow is out of arrows" do
+      out_of_arrows_viking = Viking.new("Fred", 10, 10, )
+
   end
 end
