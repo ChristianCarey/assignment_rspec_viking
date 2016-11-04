@@ -19,5 +19,4 @@ class Bow < Weapon
   def out_of_arrows?
     @arrows <= 0
   end
-
 end

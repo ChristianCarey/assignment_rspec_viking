@@ -2,6 +2,7 @@ describe Viking do
 
   let(:viking){ Viking.new }
   let(:bow){ double("Bow", is_a?: true, use: 2 ) }
+
   before do 
     allow(viking).to receive(:puts)
   end
@@ -103,8 +104,12 @@ describe Viking do
       viking.attack(target)
     end
 
-    it "it uses when bow is out of arrows" do
-      out_of_arrows_viking = Viking.new("Fred", 10, 10, )
-
+    it "it uses fists when bow is out of arrows" do
+        # allow double of bow to recieve use and throw exception 
+        allow(bow).to receive(:use).and_raise("Out of arrows")
+        viking.pick_up_weapon(bow)
+        expect(viking).to receive(:damage_with_fists)
+        viking.attack(target)
+    end
   end
 end

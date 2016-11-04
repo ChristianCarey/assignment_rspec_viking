@@ -21,7 +21,7 @@ describe Warmup do
 
   describe "#calls_some_methods" do 
 
-    let(:string){ instance_double("String", :upcase! => nil, :reverse! => nil, :empty? => nil) }
+    let(:string){ instance_double("String", :upcase! => nil, :reverse! => nil, :empty? => false) }
 
     before(:each) do
       allow(string).to receive(:upcase!).and_return(string)
