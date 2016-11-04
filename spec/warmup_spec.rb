@@ -23,20 +23,31 @@ describe Warmup do
 
     let(:string){ instance_double("String", :upcase! => nil, :reverse! => nil, :empty? => nil) }
 
+    before(:each) do
+      allow(string).to receive(:upcase!).and_return(string)
+    end
+
     it "raises an error if the argument is empty" do 
       allow(string).to receive(:empty?).and_return(true)
       expect{ warmup.calls_some_methods(string) }.to raise_error("Hey, give me a string!")
     end
 
     it "capitalizes the argument" do 
-      expect(string).to receive(:upcase!).and_return(string)
+      expect(string).to receive(:upcase!)
       warmup.calls_some_methods(string)
     end
 
     it "reverses the argument" do 
-      allow(string).to receive(:upcase!).and_return(string)
       expect(string).to receive(:reverse!)
       warmup.calls_some_methods(string)
     end
+
+    it 'returns an unrelated object' do
+      expect(warmup.calls_some_methods(string)).not_to eq(string)
+    end
+
   end
 end
+
+
+
