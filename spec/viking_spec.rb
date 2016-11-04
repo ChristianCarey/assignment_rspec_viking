@@ -2,6 +2,9 @@ describe Viking do
 
   let(:viking){ Viking.new }
   let(:bow){ double("Bow", is_a?: true ) }
+  before do 
+    allow(viking).to receive(:puts)
+  end
 
   it "has a name when you pass it a name" do 
     expect(Viking.new("Bob").name).to eq("Bob")
@@ -65,8 +68,14 @@ describe Viking do
 
   end
 
+  describe "#attack" do 
 
-
-
-
+    let(:target){ double("Target", name: "Target", receive_attack: nil )}
+    
+    it "should attack its target" do 
+      allow(viking).to receive(:puts)
+      expect(target).to receive(:receive_attack).with(2.5)
+      viking.attack(target)
+    end
+  end
 end

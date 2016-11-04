@@ -18,6 +18,10 @@ describe Bow do
 
   describe '#use' do
 
+    before do 
+      allow(bow).to receive(:puts)
+    end
+
     it 'should reduce arrows by 1' do
       expect{bow.use}.to change{bow.arrows}.by(-1)
     end
